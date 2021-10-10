@@ -3,12 +3,24 @@ package Tetromino;
 public class TetrominoSquare {
     private int xCoordinate;
     private int yCoordinate;
-    private boolean isRoot = false;
+    private boolean root = false;
+
+    public int getXCoordinate() {
+        return xCoordinate;
+    }
+
+    public int getYCoordinate() {
+        return yCoordinate;
+    }
+
+    public boolean isRoot() {
+        return root;
+    }
 
     public TetrominoSquare(int x, int y, boolean isRoot){
         xCoordinate = x;
         yCoordinate = y;
-        this.isRoot = isRoot;
+        this.root = isRoot;
     }
 
     public TetrominoSquare(int x, int y){
