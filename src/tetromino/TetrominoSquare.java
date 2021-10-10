@@ -1,4 +1,4 @@
-package Tetromino;
+package tetromino;
 
 public class TetrominoSquare {
     private int xCoordinate;
@@ -11,6 +11,11 @@ public class TetrominoSquare {
 
     public int getYCoordinate() {
         return yCoordinate;
+    }
+
+    public void setCoordinates(int x, int y){
+        this.xCoordinate = x;
+        this.yCoordinate = y;
     }
 
     public boolean isRoot() {

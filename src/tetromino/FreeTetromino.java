@@ -1,4 +1,4 @@
-package Tetromino;
+package tetromino;
 
 abstract public class FreeTetromino {
     protected String color;
@@ -6,10 +6,21 @@ abstract public class FreeTetromino {
     protected RotationPosition currentRotationPosition = RotationPosition.noRotation;
 
     protected enum RotationPosition {
-        noRotation, oneQuarterRotation, halfRotation, threeQuarterRotation
+        noRotation, oneQuarterRotation, halfRotation, threeQuarterRotation;
+
+        public RotationPosition getNext() {
+            return this.ordinal() < RotationPosition.values().length - 1
+                    ? RotationPosition.values()[this.ordinal() + 1]
+                    : RotationPosition.values()[0];
+        }
     }
 
     protected TetrominoSquare[] tetrominoSquares = new TetrominoSquare[4];
+
+    public FreeTetromino(String color, int startXCoordinate, int startYCoordinate) {
+        this.color = color;
+        createTetromino(startXCoordinate, startYCoordinate);
+    }
 
     public int[][] getTetrominoPositions() {
         int[][] positions = new int[4][2];
@@ -26,11 +37,6 @@ abstract public class FreeTetromino {
                 return new int[]{tetrominoSquare.getXCoordinate(), tetrominoSquare.getYCoordinate()};
         }
         return new int[0];
-    }
-
-    public FreeTetromino(String color, int startXCoordinate, int startYCoordinate) {
-        this.color = color;
-        createTetromino(startXCoordinate, startYCoordinate);
     }
 
     public void moveDown() {
@@ -51,7 +57,24 @@ abstract public class FreeTetromino {
         }
     }
 
-    public abstract void rotate();
+    public void rotate() {
+        currentRotationPosition = currentRotationPosition.getNext();
+
+        switch (currentRotationPosition) {
+            case noRotation -> setNoRotationCoordinates();
+            case oneQuarterRotation -> setOneQuarterRotationCoordinates();
+            case halfRotation -> setHalfRotationCoordinates();
+            case threeQuarterRotation -> setThreeQuarterRotationCoordinates();
+        }
+    }
+
+    protected abstract void setNoRotationCoordinates();
+
+    protected abstract void setOneQuarterRotationCoordinates();
+
+    protected abstract void setHalfRotationCoordinates();
+
+    protected abstract void setThreeQuarterRotationCoordinates();
 
     protected abstract void createTetromino(int startXCoordinate, int startYCoordinate);
 }
