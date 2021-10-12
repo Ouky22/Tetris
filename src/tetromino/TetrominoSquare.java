@@ -13,7 +13,7 @@ public class TetrominoSquare {
         return yCoordinate;
     }
 
-    public void setCoordinates(int x, int y){
+    public void setCoordinates(int x, int y) {
         this.xCoordinate = x;
         this.yCoordinate = y;
     }
@@ -22,26 +22,26 @@ public class TetrominoSquare {
         return root;
     }
 
-    public TetrominoSquare(int x, int y, boolean isRoot){
+    public TetrominoSquare(int x, int y, boolean isRoot) {
         xCoordinate = x;
         yCoordinate = y;
         this.root = isRoot;
     }
 
-    public TetrominoSquare(int x, int y){
+    public TetrominoSquare(int x, int y) {
         xCoordinate = x;
         yCoordinate = y;
     }
 
-    public void incrementX(){
+    public void incrementX() {
         xCoordinate++;
     }
 
-    public void decrementX(){
+    public void decrementX() {
         xCoordinate--;
     }
 
-    public void incrementY(){
+    public void incrementY() {
         yCoordinate++;
     }
 }

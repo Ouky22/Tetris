@@ -5,20 +5,12 @@ abstract public class FreeTetromino {
 
     protected RotationPosition currentRotationPosition = RotationPosition.noRotation;
 
-    protected enum RotationPosition {
-        noRotation, oneQuarterRotation, halfRotation, threeQuarterRotation;
-
-        public RotationPosition getNext() {
-            return this.ordinal() < RotationPosition.values().length - 1
-                    ? RotationPosition.values()[this.ordinal() + 1]
-                    : RotationPosition.values()[0];
-        }
-    }
-
     protected TetrominoSquare[] tetrominoSquares = new TetrominoSquare[4];
 
     public FreeTetromino(String color, int startXCoordinate, int startYCoordinate) {
         this.color = color;
+        // add root TetrominoSquare
+        tetrominoSquares[0] = new TetrominoSquare(startXCoordinate, startYCoordinate, true);
         createTetromino(startXCoordinate, startYCoordinate);
     }
 
@@ -36,7 +28,14 @@ abstract public class FreeTetromino {
             if (tetrominoSquare.isRoot())
                 return new int[]{tetrominoSquare.getXCoordinate(), tetrominoSquare.getYCoordinate()};
         }
-        return new int[0];
+        return null;
+    }
+
+    public TetrominoSquare getRootTetrominoSquare() {
+        for (TetrominoSquare square : tetrominoSquares)
+            if (square.isRoot())
+                return square;
+        return null;
     }
 
     public void moveDown() {
