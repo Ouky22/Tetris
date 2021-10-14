@@ -5,12 +5,8 @@ public class TetrominoSquare {
     private int yCoordinate;
     private boolean root = false;
 
-    public int getXCoordinate() {
-        return xCoordinate;
-    }
-
-    public int getYCoordinate() {
-        return yCoordinate;
+    public int[] getCoordinates() {
+        return new int[]{xCoordinate, yCoordinate};
     }
 
     public void setCoordinates(int x, int y) {

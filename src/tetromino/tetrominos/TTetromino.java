@@ -16,48 +16,4 @@ public class TTetromino extends FreeTetromino {
         tetrominoSquares[2] = new TetrominoSquare(x, y + 1);
         tetrominoSquares[3] = new TetrominoSquare(x + 1, y);
     }
-
-    @Override
-    protected void setNoRotationCoordinates() {
-        TetrominoSquare rootTetrominoSquare = getRootTetrominoSquare();
-        int x = rootTetrominoSquare.getXCoordinate();
-        int y = rootTetrominoSquare.getYCoordinate();
-
-        tetrominoSquares[1].setCoordinates(x - 1, y);
-        tetrominoSquares[2].setCoordinates(x, y + 1);
-        tetrominoSquares[3].setCoordinates(x + 1, y);
-    }
-
-    @Override
-    protected void setOneQuarterRotationCoordinates() {
-        TetrominoSquare rootTetrominoSquare = getRootTetrominoSquare();
-        int x = rootTetrominoSquare.getXCoordinate();
-        int y = rootTetrominoSquare.getYCoordinate();
-
-        tetrominoSquares[1].setCoordinates(x, y + 1);
-        tetrominoSquares[2].setCoordinates(x + 1, y);
-        tetrominoSquares[3].setCoordinates(x, y - 1);
-    }
-
-    @Override
-    protected void setHalfRotationCoordinates() {
-        TetrominoSquare rootTetrominoSquare = getRootTetrominoSquare();
-        int x = rootTetrominoSquare.getXCoordinate();
-        int y = rootTetrominoSquare.getYCoordinate();
-
-        tetrominoSquares[1].setCoordinates(x + 1, y);
-        tetrominoSquares[2].setCoordinates(x, y - 1);
-        tetrominoSquares[3].setCoordinates(x - 1, y);
-    }
-
-    @Override
-    protected void setThreeQuarterRotationCoordinates() {
-        TetrominoSquare rootTetrominoSquare = getRootTetrominoSquare();
-        int x = rootTetrominoSquare.getXCoordinate();
-        int y = rootTetrominoSquare.getYCoordinate();
-
-        tetrominoSquares[1].setCoordinates(x, y - 1);
-        tetrominoSquares[2].setCoordinates(x - 1, y);
-        tetrominoSquares[3].setCoordinates(x, y + 1);
-    }
 }
