@@ -64,10 +64,8 @@ abstract public class FreeTetromino {
 
             // rotate help vector around origin of coordinates
             int[] rotatedHelpVector = new int[]{
-                    (int) (Math.cos(Math.toRadians(90)) * helpVector[0])
-                            + (int) (-1 * Math.sin(Math.toRadians(90)) * helpVector[1]),
-                    (int) (Math.sin(Math.toRadians(90)) * helpVector[0])
-                            + (int) (Math.cos(Math.toRadians(90)) * helpVector[1])
+                    -1 * helpVector[1],
+                    helpVector[0]
             };
 
             // add rotated help vector to coordinates of root vector to get new coordinates of rotated Square
