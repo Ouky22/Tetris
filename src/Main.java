@@ -3,7 +3,7 @@ import tetromino.tetrominos.TTetromino;
 
 public class Main {
     public static void main(String[] args) {
-        TTetromino tetro = new TTetromino("", 5, 2);
+        TTetromino tetro = new TTetromino(5, 2);
 
         for (int i = 0; i < 4; i++) {
             int[][] positions = tetro.getTetrominoPositions();
