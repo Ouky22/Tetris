@@ -1,29 +1,29 @@
 package field;
 
-import java.util.Arrays;
-
 public class Field {
     FieldPlace[][] fieldPlaces;
-    int height;
-    int width;
+    int fieldHeight;
+    int fieldWidth;
 
-    public int getHeight() {
-        return height;
+    public int getFieldHeight() {
+        return fieldHeight;
     }
 
-    public int getWidth() {
-        return width;
+    public int getFieldWidth() {
+        return fieldWidth;
     }
 
-    public Field(int height, int width) {
-        this.height = height;
-        this.width = width;
+    public Field(int fieldHeight, int fieldWidth) {
+        this.fieldHeight = fieldHeight;
+        this.fieldWidth = fieldWidth;
 
-        fieldPlaces = new FieldPlace[height][width];
+        fieldPlaces = new FieldPlace[fieldHeight][fieldWidth];
 
         // fill field with instances of FieldPlace
-        for (FieldPlace[] row : fieldPlaces) {
-            Arrays.fill(row, new FieldPlace());
+        for (int i = 0; i < fieldPlaces.length; i++) {
+            for (int k = 0; k < fieldPlaces[i].length; k++) {
+                fieldPlaces[i][k] = new FieldPlace();
+            }
         }
     }
 
@@ -35,8 +35,8 @@ public class Field {
         for (int[] coordinate : coordinates) {
             int xCoordinate = coordinate[0];
             int yCoordinate = coordinate[1];
-            fieldPlaces[xCoordinate][yCoordinate].setIsTaken(true);
-            fieldPlaces[xCoordinate][yCoordinate].setColor(color);
+            fieldPlaces[yCoordinate][xCoordinate].setIsTaken(true);
+            fieldPlaces[yCoordinate][xCoordinate].setColor(color);
         }
     }
 
@@ -46,8 +46,8 @@ public class Field {
      * Returns true if a full row is found and removed and false if there is
      * no full row.
      */
-    public boolean removeFullRows() {
-        for (int i = 0; i < fieldPlaces.length; i++) {
+    public boolean removeFullRow() {
+        for (int i = 0; i < fieldHeight; i++) {
             // search for full rows
             boolean fullRowFound = true;
             for (FieldPlace place : fieldPlaces[i]) {
@@ -61,12 +61,13 @@ public class Field {
             // one step down to removed row
             if (fullRowFound) {
                 // slide every row above row to be removed one step down (imagine the field)
-                for (int k = i; k > 0; k--) {
+                for (int k = i; k < fieldHeight - 1; k++) {
                     // copy row above current row to current row
-                    fieldPlaces[k] = fieldPlaces[k - 1];
-
-                    // clear row above (needed because of the highest row)
-                    Arrays.fill(fieldPlaces[k - 1], new FieldPlace());
+                    fieldPlaces[k] = fieldPlaces[k + 1];
+                }
+                // clear highest row
+                for (int k = 0; k < fieldWidth; k++) {
+                    fieldPlaces[fieldHeight - 1][k] = new FieldPlace();
                 }
                 return true;
             }
