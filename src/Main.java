@@ -26,6 +26,7 @@ public class Main {
         boolean foundRow = field.removeFullRow();
         System.out.println("bla");
 
+
 //        for (int i = 0; i < 4; i++) {
 //            int[][] positions = tetro.getTetrominoPositions();
 //            System.out.printf("%n%n%d.:%n", i);
