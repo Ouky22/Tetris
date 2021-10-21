@@ -4,12 +4,13 @@ import tetromino.tetrominos.*;
 
 public class GameManager {
     private FreeTetromino freeTetromino;
+    private CollisionControl collisionControl;
 
     public boolean createNewFreeTetromino() {
         int startXCoordinate = 0;
         int startYCoordinate = 0;
 
-        if (!canCreateNewFreeTetromino())
+        if (!collisionControl.canCreateNewFreeTetromino())
             return false;
 
         // create a specific FreeTetromino randomly
@@ -41,7 +42,7 @@ public class GameManager {
     }
 
     public boolean moveDown() {
-        if (canMoveDown()) {
+        if (collisionControl.canMoveDown(freeTetromino)) {
             freeTetromino.moveDown();
             return true;
         }
@@ -49,7 +50,7 @@ public class GameManager {
     }
 
     public boolean moveLeft() {
-        if (canMoveLeft()) {
+        if (collisionControl.canMoveLeft(freeTetromino)) {
             freeTetromino.moveLeft();
             return true;
         }
@@ -57,7 +58,7 @@ public class GameManager {
     }
 
     public boolean moveRight() {
-        if (canMoveRight()) {
+        if (collisionControl.canMoveRight(freeTetromino)) {
             freeTetromino.moveRight();
             return true;
         }
@@ -65,7 +66,7 @@ public class GameManager {
     }
 
     public boolean rotate() {
-        if (canRotate()) {
+        if (collisionControl.canRotate(freeTetromino)) {
             freeTetromino.rotate();
             return true;
         }
@@ -79,40 +80,5 @@ public class GameManager {
     public int removeLines() {
         // TODO
         return 0;
-    }
-
-    /**
-     * Checks if there is enough space in the field for a new Tetromino.
-     * this method can be used to determine if the game is over (when there isn't enough space anymore)
-     */
-    private boolean canCreateNewFreeTetromino() {
-        // TODO
-        return false;
-    }
-
-    /**
-     * Checks if current FreeTetromino can move Down.
-     * There are two cases in which Tetromino can't move down:
-     * 1. FreeTetromino reaches ground
-     * 2. FreeTetromino is blocked by another sitting Tetromino
-     */
-    private boolean canMoveDown() {
-        // TODO
-        return false;
-    }
-
-    private boolean canMoveLeft() {
-        // TODO
-        return false;
-    }
-
-    private boolean canMoveRight() {
-        // TODO
-        return false;
-    }
-
-    private boolean canRotate() {
-        // TODO
-        return false;
     }
 }

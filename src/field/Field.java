@@ -13,6 +13,10 @@ public class Field {
         return fieldWidth;
     }
 
+    public FieldPlace[][] getFieldPlaces() {
+        return fieldPlaces;
+    }
+
     public Field(int fieldHeight, int fieldWidth) {
         this.fieldHeight = fieldHeight;
         this.fieldWidth = fieldWidth;
