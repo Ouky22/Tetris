@@ -42,7 +42,8 @@ public class Field {
 
     /**
      * Searches for one row where every place isTaken and "removes" it.
-     * After each removal, taken places above slide down one step in the field.
+     * To remove the full row, every row above row will be copied
+     * one step down towards the full row and the highest row will be cleared.
      * Returns true if a full row is found and removed and false if there is
      * no full row.
      */
@@ -60,12 +61,14 @@ public class Field {
             // "remove" full row of taken places and slide rows above
             // one step down to removed row
             if (fullRowFound) {
-                // slide every row above row to be removed one step down (imagine the field)
+                // slide every row above row to be removed one step down
                 for (int k = i; k < fieldHeight - 1; k++) {
                     // copy row above current row to current row
                     fieldPlaces[k] = fieldPlaces[k + 1];
                 }
-                // clear highest row
+
+                // clear highest row, because if full row is found
+                // and removed, the highest row must be always cleared
                 for (int k = 0; k < fieldWidth; k++) {
                     fieldPlaces[fieldHeight - 1][k] = new FieldPlace();
                 }
