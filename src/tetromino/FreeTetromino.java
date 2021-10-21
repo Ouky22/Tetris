@@ -1,16 +1,22 @@
 package tetromino;
 
+import tetromino.tetrominos.TTetromino;
+
 abstract public class FreeTetromino {
     protected String color;
 
     protected TetrominoSquare[] tetrominoSquares = new TetrominoSquare[4];
 
     public FreeTetromino(String color, int startXCoordinate, int startYCoordinate) {
-        this.color = color;
         // add root TetrominoSquare
         tetrominoSquares[0] = new TetrominoSquare(startXCoordinate, startYCoordinate, true);
+
+        // add normal TetrominoSquares depending on the specific tetromino
         createTetromino(startXCoordinate, startYCoordinate);
+
+        this.color = color;
     }
+
 
     public int[][] getTetrominoPositions() {
         int[][] positions = new int[4][2];

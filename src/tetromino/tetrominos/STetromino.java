@@ -1,11 +1,12 @@
 package tetromino.tetrominos;
 
 import tetromino.FreeTetromino;
+import tetromino.TetrominoColor;
 import tetromino.TetrominoSquare;
 
 public class STetromino extends FreeTetromino {
-    public STetromino(String color, int startXCoordinate, int startYCoordinate) {
-        super(color, startXCoordinate, startYCoordinate);
+    public STetromino(int startXCoordinate, int startYCoordinate) {
+        super(TetrominoColor.STETROMINO_COLOR, startXCoordinate, startYCoordinate);
     }
 
     @Override
