@@ -1,7 +1,5 @@
 package tetromino;
 
-import tetromino.tetrominos.TTetromino;
-
 abstract public class FreeTetromino {
     protected String color;
 
@@ -36,7 +34,7 @@ abstract public class FreeTetromino {
 
     public void moveDown() {
         for (TetrominoSquare tetroSquare : tetrominoSquares) {
-            tetroSquare.incrementY();
+            tetroSquare.decrementY();
         }
     }
 

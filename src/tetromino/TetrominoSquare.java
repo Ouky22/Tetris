@@ -37,7 +37,7 @@ public class TetrominoSquare {
         xCoordinate--;
     }
 
-    public void incrementY() {
-        yCoordinate++;
+    public void decrementY() {
+        yCoordinate--;
     }
 }
