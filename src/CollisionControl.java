@@ -10,9 +10,14 @@ public class CollisionControl {
         this.field = field;
     }
 
-    public boolean canCreateNewFreeTetromino() {
-        // TODO
-        return false;
+    public boolean canAddTetrominoToField(FreeTetromino freeTetromino) {
+        for (int[] tetroSquarePosition : freeTetromino.getTetrominoPositions()) {
+            int xCoordinate = tetroSquarePosition[0];
+            int yCoordinate = tetroSquarePosition[1];
+            if (field.getFieldPlaces()[yCoordinate][xCoordinate].isTaken())
+                return false;
+        }
+        return true;
     }
 
     public boolean canMoveDown(FreeTetromino freeTetromino) {
