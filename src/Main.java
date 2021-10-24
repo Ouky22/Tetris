@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        TTetromino tetro = new TTetromino(5, 2);
+        TTetromino tetro = new TTetromino(3, 9);
 
 
         Field field = new Field(10, 5);

@@ -1,6 +1,7 @@
 import field.Field;
 import tetromino.FreeTetromino;
-import tetromino.tetrominos.TTetromino;
+
+import java.util.Arrays;
 
 public class CollisionControl {
     Field field;
@@ -21,18 +22,21 @@ public class CollisionControl {
     }
 
     public boolean canMoveLeft(FreeTetromino freeTetromino) {
-        // TODO
-        return false;
+        FreeTetromino tetrominoCopy = freeTetromino.clone();
+        tetrominoCopy.moveLeft();
+        return canMove(freeTetromino, tetrominoCopy);
     }
 
     public boolean canMoveRight(FreeTetromino freeTetromino) {
-        // TODO
-        return false;
+        FreeTetromino tetrominoCopy = freeTetromino.clone();
+        tetrominoCopy.moveRight();
+        return canMove(freeTetromino, tetrominoCopy);
     }
 
     public boolean canRotate(FreeTetromino freeTetromino) {
-        // TODO
-        return false;
+        FreeTetromino tetrominoCopy = freeTetromino.clone();
+        tetrominoCopy.rotate();
+        return canMove(freeTetromino, tetrominoCopy);
     }
 
     /**
@@ -42,7 +46,25 @@ public class CollisionControl {
      * 1. FreeTetromino's future position would collide with other sitting tetromino(s)
      */
     private boolean canMove(FreeTetromino currentTetromino, FreeTetromino futureTetromino) {
-        // TODO Sequenzdiagramm oneNote (Nachbarkontrolle, FeldKontrolle)
-        return false;
+        for (int[] futureTetroSquarePos : futureTetromino.getTetrominoPositions()) {
+            // if the position of a tetrominoSquare of the future tetromino has the same position
+            // of a tetrominoSquare of the current tetromino, then skip collision control, because
+            // the position can be taken from the future tetrominoSquare
+            boolean isNeighbour = false;
+            for (int[] currentTetroSquarePos : currentTetromino.getTetrominoPositions()) {
+                if (Arrays.equals(currentTetroSquarePos, futureTetroSquarePos)) {
+                    isNeighbour = true;
+                    break;
+                }
+            }
+            // make collision control
+            if (!isNeighbour) {
+                int xCoordinate = futureTetroSquarePos[0];
+                int yCoordinate = futureTetroSquarePos[1];
+                if (field.getFieldPlaces()[yCoordinate][xCoordinate].isTaken())
+                    return false;
+            }
+        }
+        return true;
     }
 }
