@@ -1,6 +1,6 @@
 package tetromino;
 
-public class TetrominoSquare {
+public class TetrominoSquare implements Cloneable {
     private int xCoordinate;
     private int yCoordinate;
     private boolean root = false;
@@ -39,5 +39,14 @@ public class TetrominoSquare {
 
     public void decrementY() {
         yCoordinate--;
+    }
+
+    @Override
+    public TetrominoSquare clone() {
+        try {
+            return (TetrominoSquare) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

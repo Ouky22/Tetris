@@ -26,6 +26,9 @@ public class Main {
         boolean foundRow = field.removeFullRow();
         System.out.println("bla");
 
+        CollisionControl cc = new CollisionControl(field);
+        cc.canMoveDown(tetro);
+
 
 //        for (int i = 0; i < 4; i++) {
 //            int[][] positions = tetro.getTetrominoPositions();
