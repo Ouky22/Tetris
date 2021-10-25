@@ -1,43 +1,66 @@
-import jdk.jshell.spi.ExecutionControl;
+import field.Field;
 import tetromino.FreeTetromino;
 import tetromino.tetrominos.*;
 
 public class GameManager {
+    private final CollisionControl collisionControl;
+    private final Field field;
     private FreeTetromino freeTetromino;
-    private CollisionControl collisionControl;
 
+    public GameManager(int fieldHeight, int fieldWidth) {
+        field = new Field(fieldHeight, fieldWidth);
+        collisionControl  = new CollisionControl(field);
+    }
+
+    public GameManager(Field field) {
+        this.field = field;
+        collisionControl  = new CollisionControl(field);
+    }
+
+    /**
+     * creates a new FreeTetromino and checks if it can be added
+     * to the field.
+     * If new Tetromino can be added, add it and return true.
+     * If not, return false (so the game is lost)
+     */
     public boolean createNewFreeTetromino() {
-        int startXCoordinate = 0;
-        int startYCoordinate = 0;
-
-        if (!collisionControl.canCreateNewFreeTetromino())
-            return false;
+        int startXCoordinate = field.getFieldWidth() / 2;
+        int startYCoordinate = field.getFieldHeight() - 2;
+        FreeTetromino nextTetromino;
 
         // create a specific FreeTetromino randomly
         switch ((int) (Math.random() * 7)) {
             case 0:
-                freeTetromino = new ITetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new ITetromino(startXCoordinate, startYCoordinate);
+                break;
             case 1:
-                freeTetromino = new JTetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new JTetromino(startXCoordinate, startYCoordinate);
+                break;
             case 2:
-                freeTetromino = new LTetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new LTetromino(startXCoordinate, startYCoordinate);
+                break;
             case 3:
-                freeTetromino = new OTetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new OTetromino(startXCoordinate, startYCoordinate);
+                break;
             case 4:
-                freeTetromino = new STetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new STetromino(startXCoordinate, startYCoordinate);
+                break;
             case 5:
-                freeTetromino = new TTetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new TTetromino(startXCoordinate, startYCoordinate);
+                break;
             case 6:
-                freeTetromino = new ZTetromino(startXCoordinate, startYCoordinate);
-                return true;
+                nextTetromino = new ZTetromino(startXCoordinate, startYCoordinate);
+                break;
             default:
                 return false;
+        }
+
+        if (collisionControl.canAddTetrominoToField(nextTetromino)) {
+            freeTetromino = nextTetromino;
+            field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -75,10 +98,9 @@ public class GameManager {
 
     /**
      * Checks for lines full of SquareTetrominos in the field and removes them.
-     * @return the number of removed lines.
+     * @return true if full row were found and removed
      */
-    public int removeLines() {
-        // TODO
-        return 0;
+    public boolean removeFullRow() {
+        return field.removeFullRow();
     }
 }

@@ -1,6 +1,6 @@
 package tetromino;
 
-abstract public class FreeTetromino implements Cloneable{
+abstract public class FreeTetromino implements Cloneable {
     protected String color;
 
     protected TetrominoSquare[] tetrominoSquares = new TetrominoSquare[4];
@@ -30,6 +30,10 @@ abstract public class FreeTetromino implements Cloneable{
                 return tetrominoSquare.getCoordinates();
         }
         return null;
+    }
+
+    public String getColor() {
+        return this.color;
     }
 
     public void moveDown() {
@@ -94,7 +98,7 @@ abstract public class FreeTetromino implements Cloneable{
         try {
             FreeTetromino clone = (FreeTetromino) super.clone();
             TetrominoSquare[] tetroSquareClones = new TetrominoSquare[clone.tetrominoSquares.length];
-            for(int i = 0; i < clone.tetrominoSquares.length; i++) {
+            for (int i = 0; i < clone.tetrominoSquares.length; i++) {
                 tetroSquareClones[i] = clone.tetrominoSquares[i].clone();
             }
             clone.tetrominoSquares = tetroSquareClones;
