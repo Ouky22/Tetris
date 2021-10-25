@@ -13,12 +13,12 @@ public class GameManager {
 
     public GameManager(int fieldHeight, int fieldWidth) {
         field = new Field(fieldHeight, fieldWidth);
-        collisionControl  = new CollisionControl(field);
+        collisionControl = new CollisionControl(field);
     }
 
     public GameManager(Field field) {
         this.field = field;
-        collisionControl  = new CollisionControl(field);
+        collisionControl = new CollisionControl(field);
     }
 
     /**
@@ -102,6 +102,7 @@ public class GameManager {
 
     /**
      * Checks for lines full of SquareTetrominos in the field and removes them.
+     *
      * @return true if full row were found and removed
      */
     public boolean removeFullRow() {
@@ -111,11 +112,15 @@ public class GameManager {
     public void drawField() throws IOException, InterruptedException {
         // clear console
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        
+
         // draw field
-        for (FieldPlace[] placeRow : field.getFieldPlaces()) {
-            for(FieldPlace place : placeRow) {
-                System.out.print(place.getColor() + "O" + TetrominoColor.ANSI_RESET);
+        for (int i = field.getFieldPlaces().length - 1; i >= 0; i--) {
+            for (int k = 0; k < field.getFieldPlaces()[i].length; k++) {
+                String color = field.getFieldPlaces()[i][k].getColor();
+                if (color != null)
+                    System.out.print(color + "O " + TetrominoColor.ANSI_RESET);
+                else
+                    System.out.print("O ");
             }
             System.out.println();
         }
