@@ -1,6 +1,10 @@
 import field.Field;
+import field.FieldPlace;
 import tetromino.FreeTetromino;
+import tetromino.TetrominoColor;
 import tetromino.tetrominos.*;
+
+import java.io.IOException;
 
 public class GameManager {
     private final CollisionControl collisionControl;
@@ -102,5 +106,18 @@ public class GameManager {
      */
     public boolean removeFullRow() {
         return field.removeFullRow();
+    }
+
+    public void drawField() throws IOException, InterruptedException {
+        // clear console
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        
+        // draw field
+        for (FieldPlace[] placeRow : field.getFieldPlaces()) {
+            for(FieldPlace place : placeRow) {
+                System.out.print(place.getColor() + "O" + TetrominoColor.ANSI_RESET);
+            }
+            System.out.println();
+        }
     }
 }

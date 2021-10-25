@@ -11,4 +11,6 @@ public class TetrominoColor {
     public static final String STETROMINO_COLOR = "\\u001B[35m"; // purple
     public static final String TTETROMINO_COLOR = "\\u001B[36m"; // cyan
     public static final String ZTETROMINO_COLOR = "\\u001B[37m"; // white
+
+    public static final String ANSI_RESET = "\u001B[0m";
 }
