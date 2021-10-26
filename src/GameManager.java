@@ -70,7 +70,9 @@ public class GameManager {
 
     public boolean moveDown() {
         if (collisionControl.canMoveDown(freeTetromino)) {
+            field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveDown();
+            field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
             return true;
         }
         return false;
@@ -78,7 +80,9 @@ public class GameManager {
 
     public boolean moveLeft() {
         if (collisionControl.canMoveLeft(freeTetromino)) {
+            field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveLeft();
+            field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
             return true;
         }
         return false;
@@ -86,7 +90,9 @@ public class GameManager {
 
     public boolean moveRight() {
         if (collisionControl.canMoveRight(freeTetromino)) {
+            field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveRight();
+            field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
             return true;
         }
         return false;
@@ -94,7 +100,9 @@ public class GameManager {
 
     public boolean rotate() {
         if (collisionControl.canRotate(freeTetromino)) {
+            field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.rotate();
+            field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
             return true;
         }
         return false;

@@ -66,7 +66,9 @@ public class CollisionControl {
             if (!isNeighbour) {
                 int xCoordinate = futureTetroSquarePos[0];
                 int yCoordinate = futureTetroSquarePos[1];
-                if (field.getFieldPlaces()[yCoordinate][xCoordinate].isTaken())
+                if (xCoordinate < 0 || xCoordinate > field.getFieldWidth() - 1
+                        || yCoordinate < 0 || yCoordinate > field.getFieldHeight() - 1
+                        || field.getFieldPlaces()[yCoordinate][xCoordinate].isTaken())
                     return false;
             }
         }
