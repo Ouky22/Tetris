@@ -44,6 +44,15 @@ public class Field {
         }
     }
 
+    public void clearFieldPlaces(int[][] coordinates) {
+        for(int[] coordinate : coordinates) {
+            int xCoordinate = coordinate[0];
+            int yCoordinate = coordinate[1];
+            fieldPlaces[yCoordinate][xCoordinate].setIsTaken(false);
+            fieldPlaces[yCoordinate][xCoordinate].setColor(null);
+        }
+    }
+
     /**
      * Searches for one row where every place isTaken and "removes" it.
      * To remove the full row, every row above row will be copied
