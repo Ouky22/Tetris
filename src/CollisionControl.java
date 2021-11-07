@@ -45,9 +45,9 @@ public class CollisionControl {
     }
 
     /**
-     * returns true if current FreeTetromino can move.
-     * There are two cases in which current FreeTetromino can't move:
-     * 1. FreeTetromino's future position would collide with wall of field
+     * returns true if current freeTetromino can move.
+     * There are two cases in which current freeTetromino can't move:
+     * 1. FreeTetromino's future position would collide with boundaries of field
      * 1. FreeTetromino's future position would collide with other sitting tetromino(s)
      */
     private boolean canMove(FreeTetromino currentTetromino, FreeTetromino futureTetromino) {

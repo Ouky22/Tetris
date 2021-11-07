@@ -38,7 +38,7 @@ abstract public class FreeTetromino implements Cloneable {
 
     public void moveDown() {
         for (TetrominoSquare tetroSquare : tetrominoSquares) {
-            tetroSquare.decrementY();
+            tetroSquare.incrementY();
         }
     }
 
@@ -55,7 +55,7 @@ abstract public class FreeTetromino implements Cloneable {
     }
 
     /**
-     * this method rotates every non-root tetrominoSquare of an free tetromino
+     * this method rotates every non-root tetrominoSquare of a free tetromino
      * 90 degrees around the root tetrominoSquare
      */
     public void rotate() {

@@ -37,8 +37,8 @@ public class TetrominoSquare implements Cloneable {
         xCoordinate--;
     }
 
-    public void decrementY() {
-        yCoordinate--;
+    public void incrementY() {
+        yCoordinate++;
     }
 
     @Override
