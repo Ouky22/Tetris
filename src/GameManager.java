@@ -115,21 +115,4 @@ public class GameManager {
     public boolean removeFullRow() {
         return field.removeFullRow();
     }
-
-    public void drawField() throws IOException, InterruptedException {
-        // clear console
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-
-        // draw field
-        for (int i = field.getFieldPlaces().length - 1; i >= 0; i--) {
-            for (int k = 0; k < field.getFieldPlaces()[i].length; k++) {
-                String color = field.getFieldPlaces()[i][k].getColor();
-                if (color != null)
-                    System.out.print(color + "O " + TetrominoColor.ANSI_RESET);
-                else
-                    System.out.print("O ");
-            }
-            System.out.println();
-        }
-    }
 }
