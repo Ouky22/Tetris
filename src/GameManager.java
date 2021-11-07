@@ -1,5 +1,4 @@
 import field.Field;
-import field.FieldPlace;
 import tetromino.FreeTetromino;
 import tetromino.TetrominoColor;
 import tetromino.tetrominos.*;
