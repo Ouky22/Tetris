@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameManager {
-    public static final int SPEED = 750; // delay
+    public static final int SPEED = 200; // delay
 
     private final CollisionControl collisionControl;
     private final Field field;
@@ -17,26 +17,13 @@ public class GameManager {
 
     private boolean gameOver = false;
     private Timer timer;
-    private boolean repaintFieldRequired = true; // TODO determine when repaint required
 
     public boolean isGameOver() {
         return gameOver;
     }
 
-    public boolean isRepaintFieldRequired() {
-        return repaintFieldRequired;
-    }
-
     public FieldPlace[][] getFieldPlaces() {
         return field.getFieldPlaces();
-    }
-
-    public int[][] getFreeTetrominoCoordinates() {
-        return freeTetromino.getTetrominoPositions();
-    }
-
-    public Color getFreeTetrominoColor() {
-        return freeTetromino.getColor();
     }
 
     public GameManager(int fieldHeight, int fieldWidth, Timer timer) {

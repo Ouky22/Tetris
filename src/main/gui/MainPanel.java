@@ -32,16 +32,12 @@ public class MainPanel extends JPanel implements ActionListener {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawGrid(g);
+        drawSquares(g);
 
-        if (gameManager.isRepaintFieldRequired()) {
-            drawGrid(g);
-            drawAllSquares(g);
-        } else {
-            drawFreeTetromino(g);
-        }
     }
 
-    private void drawAllSquares(Graphics g) {
+    private void drawSquares(Graphics g) {
         FieldPlace[][] fieldPlaces = gameManager.getFieldPlaces();
         for (int i = 0; i < fieldPlaces.length; i++) {
             for (int k = 0; k < fieldPlaces[i].length; k++) {
@@ -49,17 +45,8 @@ public class MainPanel extends JPanel implements ActionListener {
                     g.setColor(fieldPlaces[i][k].getColor());
                     g.fillRect(k * SQUARE_SIDE_LENGTH, i * SQUARE_SIDE_LENGTH,
                             SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
-
                 }
             }
-        }
-    }
-
-    private void drawFreeTetromino(Graphics g) {
-        g.setColor(gameManager.getFreeTetrominoColor());
-        for (int[] pos : gameManager.getFreeTetrominoCoordinates()) {
-            g.fillRect(pos[0] * SQUARE_SIDE_LENGTH, pos[1] * SQUARE_SIDE_LENGTH,
-                    SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
         }
     }
 
