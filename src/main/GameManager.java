@@ -59,7 +59,7 @@ public class GameManager {
      */
     public boolean createNewFreeTetromino() {
         int startXCoordinate = field.getFieldWidth() / 2;
-        int startYCoordinate = field.getFieldHeight() - 2;
+        int startYCoordinate = 0;
         FreeTetromino nextTetromino;
 
         // create a specific FreeTetromino randomly

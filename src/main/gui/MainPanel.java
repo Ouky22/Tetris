@@ -2,7 +2,6 @@ package main.gui;
 
 import main.GameManager;
 import main.field.FieldPlace;
-import main.tetromino.FreeTetromino;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,11 +25,9 @@ public class MainPanel extends JPanel implements ActionListener {
     }
 
     private void startGame() {
-
         gameManager = new GameManager(PANEL_HEIGHT / SQUARE_SIDE_LENGTH,
                 PANEL_WIDTH / SQUARE_SIDE_LENGTH, new Timer(GameManager.SPEED, this));
         gameManager.createNewFreeTetromino();
-
     }
 
     public void paintComponent(Graphics g) {
@@ -48,8 +45,12 @@ public class MainPanel extends JPanel implements ActionListener {
         FieldPlace[][] fieldPlaces = gameManager.getFieldPlaces();
         for (int i = 0; i < fieldPlaces.length; i++) {
             for (int k = 0; k < fieldPlaces[i].length; k++) {
-                g.setColor(fieldPlaces[i][k].getColor());
-                g.drawRect(i, k, SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
+                if (fieldPlaces[i][k].isTaken()) {
+                    g.setColor(fieldPlaces[i][k].getColor());
+                    g.fillRect(k * SQUARE_SIDE_LENGTH, i * SQUARE_SIDE_LENGTH,
+                            SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
+
+                }
             }
         }
     }
@@ -57,7 +58,8 @@ public class MainPanel extends JPanel implements ActionListener {
     private void drawFreeTetromino(Graphics g) {
         g.setColor(gameManager.getFreeTetrominoColor());
         for (int[] pos : gameManager.getFreeTetrominoCoordinates()) {
-            g.drawRect(pos[0], pos[1], SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
+            g.fillRect(pos[0] * SQUARE_SIDE_LENGTH, pos[1] * SQUARE_SIDE_LENGTH,
+                    SQUARE_SIDE_LENGTH, SQUARE_SIDE_LENGTH);
         }
     }
 
@@ -84,10 +86,10 @@ public class MainPanel extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
-                case 224 -> gameManager.rotate();
-                case 225 -> gameManager.moveDown();
-                case 226 -> gameManager.moveLeft();
-                case 227 -> gameManager.moveRight();
+                case KeyEvent.VK_LEFT, KeyEvent.VK_KP_LEFT -> gameManager.moveLeft();
+                case KeyEvent.VK_RIGHT, KeyEvent.VK_KP_RIGHT -> gameManager.moveRight();
+                case KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN -> gameManager.moveDown();
+                case KeyEvent.VK_UP, KeyEvent.VK_KP_UP -> gameManager.rotate();
             }
         }
     }
