@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameManager {
-    public static final int SPEED = 200; // delay
+    public static final int SPEED = 500; // delay
 
     private final CollisionControl collisionControl;
     private final Field field;
@@ -132,8 +132,8 @@ public class GameManager {
      *
      * @return true if full row were found and removed
      */
-    public boolean removeFullRow() {
-        return field.removeFullRow();
+    public void removeFullRows() {
+        while (field.removeFullRow()) ;
     }
 
 }
