@@ -11,14 +11,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainPanel extends JPanel implements ActionListener {
-    private final int PANEL_WIDTH = 500;
+    private final int PANEL_WIDTH = 250;
     private final int PANEL_HEIGHT = 500;
     private final int SQUARE_SIDE_LENGTH = 25;
     private GameManager gameManager;
 
     public MainPanel() {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        this.setBackground(Color.LIGHT_GRAY);
+        this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
         startGame();
@@ -34,7 +34,6 @@ public class MainPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         drawGrid(g);
         drawSquares(g);
-
     }
 
     private void drawSquares(Graphics g) {
@@ -62,6 +61,8 @@ public class MainPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!gameManager.moveDown()) {
+            gameManager.removeFullRows();
+
             if (!gameManager.createNewFreeTetromino()) {
                 // TODO end game
             }

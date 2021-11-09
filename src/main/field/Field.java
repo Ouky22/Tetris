@@ -90,9 +90,11 @@ public class Field {
 
                 // clear highest row, because if full row is found
                 // and removed, the highest row must always be cleared
-                for (int k = 0; k < fieldWidth; k++) {
-                    fieldPlaces[0][k] = new FieldPlace();
+                FieldPlace[] newHighestRow = new FieldPlace[fieldWidth];
+                for (int k = 0; k < newHighestRow.length; k++) {
+                    newHighestRow[k] = new FieldPlace();
                 }
+                fieldPlaces[0] = newHighestRow;
                 return true;
             }
         }
