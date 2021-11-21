@@ -11,22 +11,33 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainPanel extends JPanel implements ActionListener {
-    private final int PANEL_WIDTH = 250;
-    private final int PANEL_HEIGHT = 500;
+    private final int GRID_FIELD_WIDTH = 250;
+    private final int GRID_FIELD_HEIGHT = 500;
     private final int SQUARE_SIDE_LENGTH = 25;
     private GameManager gameManager;
 
+    InfoPanel infoPanel = new InfoPanel();
+
     public MainPanel() {
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        int panelWidth = GRID_FIELD_WIDTH + (int) infoPanel.getPreferredSize().getWidth();
+        this.setPreferredSize(new Dimension(panelWidth, GRID_FIELD_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
+        this.setLayout(null);
+
+        infoPanel.setBounds(GRID_FIELD_WIDTH, 0, (int) infoPanel.getPreferredSize().getWidth(), GRID_FIELD_HEIGHT);
+        this.add(infoPanel);
+
+        infoPanel.updateCurrentScore(200);
+        infoPanel.updateHighScore(2300);
+
         startGame();
     }
 
     private void startGame() {
-        gameManager = new GameManager(PANEL_HEIGHT / SQUARE_SIDE_LENGTH,
-                PANEL_WIDTH / SQUARE_SIDE_LENGTH, new Timer(GameManager.SPEED, this));
+        gameManager = new GameManager(GRID_FIELD_HEIGHT / SQUARE_SIDE_LENGTH,
+                GRID_FIELD_WIDTH / SQUARE_SIDE_LENGTH, new Timer(GameManager.SPEED, this));
         gameManager.createNewFreeTetromino();
     }
 
@@ -50,11 +61,11 @@ public class MainPanel extends JPanel implements ActionListener {
     }
 
     private void drawGrid(Graphics g) {
-        for (int i = 0; i < PANEL_WIDTH; i += SQUARE_SIDE_LENGTH) {
-            g.drawLine(i, 0, i, PANEL_HEIGHT);
+        for (int i = 0; i < GRID_FIELD_WIDTH; i += SQUARE_SIDE_LENGTH) {
+            g.drawLine(i, 0, i, GRID_FIELD_HEIGHT);
         }
-        for (int i = 0; i < PANEL_HEIGHT; i += SQUARE_SIDE_LENGTH) {
-            g.drawLine(0, i, PANEL_WIDTH, i);
+        for (int i = 0; i < GRID_FIELD_HEIGHT; i += SQUARE_SIDE_LENGTH) {
+            g.drawLine(0, i, GRID_FIELD_WIDTH, i);
         }
     }
 

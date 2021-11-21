@@ -30,7 +30,7 @@ public class GameManager {
         field = new Field(fieldHeight, fieldWidth);
         collisionControl = new CollisionControl(field);
         this.timer = timer;
-        timer.setInitialDelay(0);
+        timer.setInitialDelay(10);
         timer.start();
     }
 
