@@ -60,7 +60,7 @@ public class MainPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameManager.moveDown()) {
+        if (!gameManager.moveDown(false)) {
             gameManager.removeFullRows();
 
             if (!gameManager.createNewFreeTetromino()) {
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel implements ActionListener {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT, KeyEvent.VK_KP_LEFT -> gameManager.moveLeft();
                 case KeyEvent.VK_RIGHT, KeyEvent.VK_KP_RIGHT -> gameManager.moveRight();
-                case KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN -> gameManager.moveDown();
+                case KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN -> gameManager.moveDown(true);
                 case KeyEvent.VK_UP, KeyEvent.VK_KP_UP -> gameManager.rotate();
             }
         }

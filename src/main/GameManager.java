@@ -30,6 +30,7 @@ public class GameManager {
         field = new Field(fieldHeight, fieldWidth);
         collisionControl = new CollisionControl(field);
         this.timer = timer;
+        timer.setInitialDelay(0);
         timer.start();
     }
 
@@ -87,11 +88,18 @@ public class GameManager {
         }
     }
 
-    public boolean moveDown() {
+    /**
+     * moveDown can be called from the system or from the player.
+     * If called from the player and tetromino can move down,
+     * trigger event for redrawing the field (for smoother gameplay)
+     */
+    public boolean moveDown(boolean fromPlayer) {
         if (collisionControl.canMoveDown(freeTetromino)) {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveDown();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            if (fromPlayer)
+                timer.restart();
             return true;
         }
         return false;
@@ -102,6 +110,7 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveLeft();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
@@ -112,6 +121,7 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveRight();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
@@ -122,6 +132,7 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.rotate();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
@@ -130,10 +141,9 @@ public class GameManager {
     /**
      * Checks for lines full of SquareTetrominos in the main.field and removes them.
      *
-     * @return true if full row were found and removed
+     * @return true if full rows were found and removed
      */
     public void removeFullRows() {
         while (field.removeFullRow()) ;
     }
-
 }
