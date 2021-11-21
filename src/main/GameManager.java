@@ -16,10 +16,20 @@ public class GameManager {
     private FreeTetromino freeTetromino;
 
     private boolean gameOver = false;
+    private int currentScore;
+    private int highScore;
     private Timer timer;
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
     public FieldPlace[][] getFieldPlaces() {
@@ -139,11 +149,15 @@ public class GameManager {
     }
 
     /**
-     * Checks for lines full of SquareTetrominos in the main.field and removes them.
-     *
-     * @return true if full rows were found and removed
+     * Checks for lines full of SquareTetrominos in the field and removes them.
+     * For every row removed the score gets increased
      */
     public void removeFullRows() {
-        while (field.removeFullRow()) ;
+        while (field.removeFullRow()) {
+            currentScore += 20;
+            if (currentScore > highScore) {
+                highScore = currentScore;
+            }
+        }
     }
 }

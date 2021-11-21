@@ -29,9 +29,6 @@ public class MainPanel extends JPanel implements ActionListener {
         infoPanel.setBounds(GRID_FIELD_WIDTH, 0, (int) infoPanel.getPreferredSize().getWidth(), GRID_FIELD_HEIGHT);
         this.add(infoPanel);
 
-        infoPanel.updateCurrentScore(200);
-        infoPanel.updateHighScore(2300);
-
         startGame();
     }
 
@@ -45,6 +42,8 @@ public class MainPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         drawGrid(g);
         drawSquares(g);
+        infoPanel.updateHighScore(gameManager.getHighScore());
+        infoPanel.updateCurrentScore(gameManager.getCurrentScore());
     }
 
     private void drawSquares(Graphics g) {
