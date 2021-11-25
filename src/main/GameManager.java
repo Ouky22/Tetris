@@ -7,9 +7,14 @@ import main.tetromino.tetrominos.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class GameManager {
     public static final int SPEED = 500; // delay
+    private final String HIGH_SCORE_FILE_NAME = "highScore.txt";
 
     private final CollisionControl collisionControl;
     private final Field field;
@@ -40,20 +45,16 @@ public class GameManager {
         field = new Field(fieldHeight, fieldWidth);
         collisionControl = new CollisionControl(field);
         this.timer = timer;
+        highScore = readHighScore();
         timer.setInitialDelay(10);
         timer.start();
     }
 
-    public GameManager(Field field) {
-        this.field = field;
-        collisionControl = new CollisionControl(field);
-    }
-
     /**
      * creates a new FreeTetromino and checks if it can be added
-     * to the main.field.
+     * to the field.
      * If new Tetromino can be added, add it and return true.
-     * If not, return false (so the game is lost)
+     * If not, return false (so the game is over)
      */
     public boolean createNewFreeTetromino() {
         int startXCoordinate = field.getFieldWidth() / 2;
@@ -93,6 +94,8 @@ public class GameManager {
             return true;
         } else {
             gameOver = true;
+            if (highScore == currentScore) // only save new highScores
+                saveHighScore();
             timer.stop();
             return false;
         }
@@ -158,6 +161,35 @@ public class GameManager {
             if (currentScore > highScore) {
                 highScore = currentScore;
             }
+        }
+    }
+
+    private int readHighScore() {
+        int highScore = 0;
+        try (Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "\\" + HIGH_SCORE_FILE_NAME))) {
+            while (sc.hasNextLine())
+                highScore = Integer.parseInt(sc.nextLine());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (NumberFormatException ex) { // highScore file contains invalid data
+            clearHighScoreFile();
+        }
+        return highScore;
+    }
+
+    private void saveHighScore() {
+        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
+            fileWriter.write(String.valueOf(highScore));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void clearHighScoreFile() {
+        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
+            fileWriter.write("");
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }
