@@ -6,20 +6,34 @@ import main.tetromino.FreeTetromino;
 import main.tetromino.tetrominos.*;
 
 import javax.swing.*;
-import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class GameManager {
     public static final int SPEED = 500; // delay
+    private final String HIGH_SCORE_FILE_NAME = "highScore.txt";
 
     private final CollisionControl collisionControl;
     private final Field field;
     private FreeTetromino freeTetromino;
 
     private boolean gameOver = false;
-    private Timer timer;
+    private int currentScore;
+    private int highScore;
+    private final Timer timer;
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
     public FieldPlace[][] getFieldPlaces() {
@@ -30,19 +44,16 @@ public class GameManager {
         field = new Field(fieldHeight, fieldWidth);
         collisionControl = new CollisionControl(field);
         this.timer = timer;
+        highScore = readHighScore();
+        timer.setInitialDelay(10);
         timer.start();
-    }
-
-    public GameManager(Field field) {
-        this.field = field;
-        collisionControl = new CollisionControl(field);
     }
 
     /**
      * creates a new FreeTetromino and checks if it can be added
-     * to the main.field.
+     * to the field.
      * If new Tetromino can be added, add it and return true.
-     * If not, return false (so the game is lost)
+     * If not, return false (so the game is over)
      */
     public boolean createNewFreeTetromino() {
         int startXCoordinate = field.getFieldWidth() / 2;
@@ -82,16 +93,25 @@ public class GameManager {
             return true;
         } else {
             gameOver = true;
+            if (highScore == currentScore) // only save new highScores
+                saveHighScore();
             timer.stop();
             return false;
         }
     }
 
-    public boolean moveDown() {
+    /**
+     * moveDown can be called from the system or from the player.
+     * If called from the player and tetromino can move down,
+     * trigger event for redrawing the field (for smoother gameplay)
+     */
+    public boolean moveDown(boolean fromPlayer) {
         if (collisionControl.canMoveDown(freeTetromino)) {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveDown();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            if (fromPlayer)
+                timer.restart();
             return true;
         }
         return false;
@@ -102,6 +122,7 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveLeft();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
@@ -112,6 +133,7 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.moveRight();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
@@ -122,18 +144,51 @@ public class GameManager {
             field.clearFieldPlaces(freeTetromino.getTetrominoPositions());
             freeTetromino.rotate();
             field.fillField(freeTetromino.getTetrominoPositions(), freeTetromino.getColor());
+            timer.restart();
             return true;
         }
         return false;
     }
 
     /**
-     * Checks for lines full of SquareTetrominos in the main.field and removes them.
-     *
-     * @return true if full row were found and removed
+     * Checks for lines full of SquareTetrominos in the field and removes them.
+     * For every row removed the score gets increased
      */
     public void removeFullRows() {
-        while (field.removeFullRow()) ;
+        while (field.removeFullRow()) {
+            currentScore += 20;
+            if (currentScore > highScore) {
+                highScore = currentScore;
+            }
+        }
     }
 
+    private int readHighScore() {
+        int highScore = 0;
+        try (Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "\\" + HIGH_SCORE_FILE_NAME))) {
+            while (sc.hasNextLine())
+                highScore = Integer.parseInt(sc.nextLine());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (NumberFormatException ex) { // highScore file contains invalid data
+            clearHighScoreFile();
+        }
+        return highScore;
+    }
+
+    private void saveHighScore() {
+        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
+            fileWriter.write(String.valueOf(highScore));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void clearHighScoreFile() {
+        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
+            fileWriter.write("");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }

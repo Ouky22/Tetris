@@ -11,22 +11,36 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainPanel extends JPanel implements ActionListener {
-    private final int PANEL_WIDTH = 250;
-    private final int PANEL_HEIGHT = 500;
+    private final int GRID_FIELD_WIDTH = 250;
+    private final int GRID_FIELD_HEIGHT = 500;
     private final int SQUARE_SIDE_LENGTH = 25;
     private GameManager gameManager;
 
+    RestartPanel restartPanel = new RestartPanel(this);
+    InfoPanel infoPanel = new InfoPanel();
+
     public MainPanel() {
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        int panelWidth = GRID_FIELD_WIDTH + (int) infoPanel.getPreferredSize().getWidth();
+        this.setPreferredSize(new Dimension(panelWidth, GRID_FIELD_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
+        this.setLayout(null);
+
+        infoPanel.setBounds(GRID_FIELD_WIDTH, 0, (int) infoPanel.getPreferredSize().getWidth(), GRID_FIELD_HEIGHT);
+        this.add(infoPanel);
+
+        restartPanel.setBounds(GRID_FIELD_WIDTH / 3, GRID_FIELD_HEIGHT / 6,
+                (int) restartPanel.getPreferredSize().getWidth(), (int) restartPanel.getPreferredSize().getHeight() + 10);
+        restartPanel.setVisible(false);
+        this.add(restartPanel);
+
         startGame();
     }
 
     private void startGame() {
-        gameManager = new GameManager(PANEL_HEIGHT / SQUARE_SIDE_LENGTH,
-                PANEL_WIDTH / SQUARE_SIDE_LENGTH, new Timer(GameManager.SPEED, this));
+        gameManager = new GameManager(GRID_FIELD_HEIGHT / SQUARE_SIDE_LENGTH,
+                GRID_FIELD_WIDTH / SQUARE_SIDE_LENGTH, new Timer(GameManager.SPEED, this));
         gameManager.createNewFreeTetromino();
     }
 
@@ -34,6 +48,8 @@ public class MainPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         drawGrid(g);
         drawSquares(g);
+        infoPanel.updateHighScore(gameManager.getHighScore());
+        infoPanel.updateCurrentScore(gameManager.getCurrentScore());
     }
 
     private void drawSquares(Graphics g) {
@@ -50,22 +66,25 @@ public class MainPanel extends JPanel implements ActionListener {
     }
 
     private void drawGrid(Graphics g) {
-        for (int i = 0; i < PANEL_WIDTH; i += SQUARE_SIDE_LENGTH) {
-            g.drawLine(i, 0, i, PANEL_HEIGHT);
+        for (int i = 0; i < GRID_FIELD_WIDTH; i += SQUARE_SIDE_LENGTH) {
+            g.drawLine(i, 0, i, GRID_FIELD_HEIGHT);
         }
-        for (int i = 0; i < PANEL_HEIGHT; i += SQUARE_SIDE_LENGTH) {
-            g.drawLine(0, i, PANEL_WIDTH, i);
+        for (int i = 0; i < GRID_FIELD_HEIGHT; i += SQUARE_SIDE_LENGTH) {
+            g.drawLine(0, i, GRID_FIELD_WIDTH, i);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameManager.moveDown()) {
+        if (!gameManager.moveDown(false) && !gameManager.isGameOver()) {
             gameManager.removeFullRows();
 
             if (!gameManager.createNewFreeTetromino()) {
-                // TODO end game
+                restartPanel.setVisible(true);
             }
+        } else if (gameManager.isGameOver()) {
+            restartPanel.setVisible(false);
+            startGame();
         }
         repaint();
     }
@@ -73,10 +92,13 @@ public class MainPanel extends JPanel implements ActionListener {
     class GameKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            if (gameManager.isGameOver())
+                return;
+
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT, KeyEvent.VK_KP_LEFT -> gameManager.moveLeft();
                 case KeyEvent.VK_RIGHT, KeyEvent.VK_KP_RIGHT -> gameManager.moveRight();
-                case KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN -> gameManager.moveDown();
+                case KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN -> gameManager.moveDown(true);
                 case KeyEvent.VK_UP, KeyEvent.VK_KP_UP -> gameManager.rotate();
             }
         }
