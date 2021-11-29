@@ -6,7 +6,6 @@ import main.tetromino.FreeTetromino;
 import main.tetromino.tetrominos.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class GameManager {
     private boolean gameOver = false;
     private int currentScore;
     private int highScore;
-    private Timer timer;
+    private final Timer timer;
 
     public boolean isGameOver() {
         return gameOver;

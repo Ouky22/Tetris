@@ -16,6 +16,7 @@ public class MainPanel extends JPanel implements ActionListener {
     private final int SQUARE_SIDE_LENGTH = 25;
     private GameManager gameManager;
 
+    RestartPanel restartPanel = new RestartPanel(this);
     InfoPanel infoPanel = new InfoPanel();
 
     public MainPanel() {
@@ -28,6 +29,11 @@ public class MainPanel extends JPanel implements ActionListener {
 
         infoPanel.setBounds(GRID_FIELD_WIDTH, 0, (int) infoPanel.getPreferredSize().getWidth(), GRID_FIELD_HEIGHT);
         this.add(infoPanel);
+
+        restartPanel.setBounds(GRID_FIELD_WIDTH / 3, GRID_FIELD_HEIGHT / 6,
+                (int) restartPanel.getPreferredSize().getWidth(), (int) restartPanel.getPreferredSize().getHeight() + 10);
+        restartPanel.setVisible(false);
+        this.add(restartPanel);
 
         startGame();
     }
@@ -70,12 +76,15 @@ public class MainPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!gameManager.moveDown(false)) {
+        if (!gameManager.moveDown(false) && !gameManager.isGameOver()) {
             gameManager.removeFullRows();
 
             if (!gameManager.createNewFreeTetromino()) {
-                // TODO end game
+                restartPanel.setVisible(true);
             }
+        } else if (gameManager.isGameOver()) {
+            restartPanel.setVisible(false);
+            startGame();
         }
         repaint();
     }
@@ -83,6 +92,9 @@ public class MainPanel extends JPanel implements ActionListener {
     class GameKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            if (gameManager.isGameOver())
+                return;
+
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT, KeyEvent.VK_KP_LEFT -> gameManager.moveLeft();
                 case KeyEvent.VK_RIGHT, KeyEvent.VK_KP_RIGHT -> gameManager.moveRight();
