@@ -1,4 +1,4 @@
-package persistence;
+package main.persistence;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -4,20 +4,18 @@ import main.field.Field;
 import main.field.FieldPlace;
 import main.tetromino.FreeTetromino;
 import main.tetromino.tetrominos.*;
+import main.persistence.PersistenceService;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class GameManager {
     public static final int SPEED = 500; // delay
-    private final String HIGH_SCORE_FILE_NAME = "highScore.txt";
 
     private final CollisionControl collisionControl;
     private final Field field;
     private FreeTetromino freeTetromino;
+
+    private final PersistenceService persistenceService = new PersistenceService();
 
     private boolean gameOver = false;
     private int currentScore;
@@ -164,31 +162,10 @@ public class GameManager {
     }
 
     private int readHighScore() {
-        int highScore = 0;
-        try (Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "\\" + HIGH_SCORE_FILE_NAME))) {
-            while (sc.hasNextLine())
-                highScore = Integer.parseInt(sc.nextLine());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (NumberFormatException ex) { // highScore file contains invalid data
-            clearHighScoreFile();
-        }
-        return highScore;
+        return persistenceService.readHighScore();
     }
 
     private void saveHighScore() {
-        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
-            fileWriter.write(String.valueOf(highScore));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void clearHighScoreFile() {
-        try (FileWriter fileWriter = new FileWriter(HIGH_SCORE_FILE_NAME)) {
-            fileWriter.write("");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        persistenceService.saveHighScore(highScore);
     }
 }
