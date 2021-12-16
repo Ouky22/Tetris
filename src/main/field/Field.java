@@ -62,42 +62,63 @@ public class Field {
     }
 
     /**
-     * Searches for one row where every place isTaken and "removes" it.
-     * To remove the full row, every row above full row will be copied
-     * one step down towards the full row and the highest row will be cleared.
-     * Returns true if a full row is found and removed and false if there is
+     * Searches for one row where every place isTaken and removes it.
+     *
+     * @return true if a full row is found and removed and false if there is
      * no full row.
      */
     public boolean removeFullRow() {
-        for (int i = fieldHeight - 1; i > 0; i--) {
-            // search for full rows
-            boolean fullRowFound = true;
-            for (FieldPlace place : fieldPlaces[i]) {
-                if (!place.isTaken()) {
-                    fullRowFound = false;
-                    break;
-                }
+        // To remove the full row, every row above full row will be copied
+        // one step down towards the full row and the highest row will be cleared.
+
+        int fullRowIndex = getNextFullRowIndex();
+
+        if (fullRowIndex != -1) {
+            // slide every row above row to be removed one step down
+            for (int k = fullRowIndex; k > 0; k--) {
+                // copy row above current row to current row
+                fieldPlaces[k] = fieldPlaces[k - 1];
             }
 
-            // "remove" full row of taken places and slide rows above
-            // one step down to removed row
-            if (fullRowFound) {
-                // slide every row above row to be removed one step down
-                for (int k = i; k > 0; k--) {
-                    // copy row above current row to current row
-                    fieldPlaces[k] = fieldPlaces[k - 1];
-                }
-
-                // clear highest row, because if full row is found
-                // and removed, the highest row must always be cleared
-                FieldPlace[] newHighestRow = new FieldPlace[fieldWidth];
-                for (int k = 0; k < newHighestRow.length; k++) {
-                    newHighestRow[k] = new FieldPlace();
-                }
-                fieldPlaces[0] = newHighestRow;
-                return true;
+            // clear highest row, because if full row is found
+            // and removed, the highest row must always be cleared
+            FieldPlace[] newHighestRow = new FieldPlace[fieldWidth];
+            for (int k = 0; k < newHighestRow.length; k++) {
+                newHighestRow[k] = new FieldPlace();
             }
+            fieldPlaces[0] = newHighestRow;
+            return true;
         }
         return false;
     }
+
+    /**
+     * Searches for next full row in field from bottom to top.
+     *
+     * @return index of full row. Returns -1 if there is no full row.
+     */
+    private int getNextFullRowIndex() {
+        for (int i = fieldHeight - 1; i > 0; i--) {
+            if (isRowFull(i))
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Checks if row at given index is full
+     *
+     * @param row index of row
+     * @return true if the row is full
+     */
+    private boolean isRowFull(int row) {
+        if (row >= fieldPlaces.length)
+            return false;
+
+        for (FieldPlace place : fieldPlaces[row])
+            if (!place.isTaken())
+                return false;
+        return true;
+    }
+
 }
